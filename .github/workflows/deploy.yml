@@ -1,0 +1,26 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install dependencies and build (if necessary)
+      run: npm install
+
+    - name: Deploy to server
+      uses: appleboy/scp-action@master
+      with:
+        host: 165.232.114.128
+        username: canberram
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "."
+        target: "/var/www/html/"  
